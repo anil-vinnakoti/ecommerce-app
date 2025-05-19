@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"net/http"
+
 	"github.com/anil-vinnakoti/ecommerce-app/backend/db"
 	"github.com/anil-vinnakoti/ecommerce-app/backend/models"
 	"github.com/gin-gonic/gin"
@@ -14,6 +16,20 @@ func GetProducts(c *gin.Context) {
 		return
 	}
 	c.JSON(200, products)
+}
+
+// GetProduct return one product
+func GetProduct(c *gin.Context) {
+	productId := c.Param("productId")
+
+	var product []models.Product
+
+	if err := db.DB.First(&product, productId).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Product not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, product)
 }
 
 // CreateProduct creates a new product
@@ -32,9 +48,9 @@ func CreateProduct(c *gin.Context) {
 
 // UpdateProduct updates an existing product
 func UpdateProduct(c *gin.Context) {
-	id := c.Param("id")
+	productId := c.Param("productId")
 	var product models.Product
-	if err := db.DB.First(&product, id).Error; err != nil {
+	if err := db.DB.First(&product, productId).Error; err != nil {
 		c.JSON(404, gin.H{"error": "Product not found"})
 		return
 	}
@@ -51,8 +67,8 @@ func UpdateProduct(c *gin.Context) {
 
 // DeleteProduct deletes an existing product
 func DeleteProduct(c *gin.Context) {
-	id := c.Param("id")
-	if err := db.DB.Delete(&models.Product{}, id).Error; err != nil {
+	productId := c.Param("productId")
+	if err := db.DB.Delete(&models.Product{}, productId).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Unable to delete product"})
 		return
 	}

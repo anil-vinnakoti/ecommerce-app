@@ -33,9 +33,10 @@ func main() {
 
 	// Define routes for CRUD operations on Products
 	r.GET("/products", routes.GetProducts)
+	r.GET("/products/:productId", routes.GetProduct)
 	r.POST("/products", routes.CreateProduct)
-	r.PUT("/products/:id", routes.UpdateProduct)
-	r.DELETE("/products/:id", routes.DeleteProduct)
+	r.PUT("/products/:productId", routes.UpdateProduct)
+	r.DELETE("/products/:productId", routes.DeleteProduct)
 
 	// Run the server
 	if err := r.Run(":8080"); err != nil {
