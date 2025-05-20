@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/anil-vinnakoti/ecommerce-app/backend/db"
-	"github.com/anil-vinnakoti/ecommerce-app/backend/middleware"
 	"github.com/anil-vinnakoti/ecommerce-app/backend/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -49,7 +48,7 @@ func GetCart(c *gin.Context) {
 // Add item to cart
 func AddToCart(c *gin.Context) {
 	// Assume you have a function to get authenticated user ID
-	userID := middleware.GetUserID(c)
+	userID := getUserID(c)
 	if userID == 0 {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
